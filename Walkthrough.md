@@ -1,0 +1,8 @@
+### Key Design Decisions
+Trong PoC này, tôi quyết định xây dựng một dịch vụ Backend xử lý luồng (pipeline) độc lập bằng FastAPI kết hợp với model Gemini 2.5 Flash. Việc lựa chọn FastAPI giúp hệ thống nhẹ, dễ bảo trì và dễ dàng scale. Quan trọng nhất, việc sử dụng kiến trúc Multimodal LLM (đưa trực tiếp hình ảnh vào AI) giúp bỏ qua hoàn toàn bước OCR truyền thống, xử lý tốt các bố cục tài liệu lộn xộn, đồng thời giữ cho chi phí vận hành ở mức cực kỳ thấp, đáp ứng tốt ngân sách 5,000,000 VND/tháng.
+
+### What I'd do differently with more time
+Hiện tại, PoC tập trung giải quyết bài toán cốt lõi là "Trích xuất" (Extraction). Nếu có thêm thời gian, tôi sẽ hoàn thiện giao diện "Human-in-the-loop" bằng React (Frontend) và n8n (Orchestration). Trên giao diện này, nhân sự có thể xem ảnh chứng từ bên trái và form dữ liệu JSON bên phải. Hệ thống sẽ tự động bôi đỏ các trường dữ liệu có `confidence_score` thấp để con người tập trung kiểm duyệt, sau đó mới cho phép xuất ra file Excel (.xlsx).
+
+### One assumption I'm uncertain about
+Tôi đang giả định rằng các hóa đơn hoặc tài liệu từ đối tác của công ty đều có độ phân giải đủ đọc và sử dụng ngôn ngữ phổ biến (Tiếng Anh/Tiếng Việt). Nếu trong thực tế phát sinh nhiều tài liệu viết tay quá mờ hoặc bị dấu mộc che khuất quá nhiều, hệ thống có thể cần bổ sung thêm một bước tiền xử lý ảnh (Image Pre-processing) như tăng độ tương phản hoặc khử nhiễu trước khi gửi vào LLM để đảm bảo độ chính xác tuyệt đối.
